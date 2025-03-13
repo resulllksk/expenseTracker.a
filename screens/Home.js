@@ -3,15 +3,6 @@ import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, StyleSheet, 
 import { useNavigation } from '@react-navigation/native';
 import { COLORS, FONTS, SIZES, icons } from '../constanst';
 
-// import { PieChart } from 'react-native-chart-kit';
-// import NewScreen from '../NewScreen';
-// import { useNavigation } from '@react-navigation/native';
-
-
-// import ButtonWithChart from './ButtonWithChart'; // Adjust the import path as needed
-
-
-
 const Home = () => {
     const confirmStatus = "C";
     const pendingStatus = "P";
@@ -22,7 +13,7 @@ const Home = () => {
             id: 1,
             name: "Eğitim",
             icon: icons.education,
-            color: COLORS.yellow,
+            color: COLORS.black,
             expenses: [
                 {
                     id: 1,
@@ -226,6 +217,8 @@ const Home = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [categoryName, setCategoryName] = useState('');
 
+
+
     const handleAddExpense = () => {
         if (!newExpenseTitle || !newExpenseDescription || !newExpenseLocation || !newExpenseTotal) {
             Alert.alert('Lütfen tüm alanları doldurun.');
@@ -259,9 +252,10 @@ const Home = () => {
         setNewExpenseTotal('');
     };
 
+    //geri dönme ve üç nokta
     const renderNavBar = () => (
         <View style={styles.navBar}>
-            <TouchableOpacity style={styles.navButton} onPress={() => console.log('Go Back')}>
+            <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('SelectionScreen')}>
                 <Image source={icons.back_arrow} style={styles.navIcon} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.navButton} onPress={() => console.log('More')}>
@@ -270,6 +264,7 @@ const Home = () => {
         </View>
     );
 
+    //harcamalarım ve tarih
     const renderHeader = () => (
         <View style={styles.header}>
             <Text style={styles.headerTitle}>Harcamalarım</Text>
@@ -291,6 +286,7 @@ const Home = () => {
         // Additional logic if needed
     };
     
+    //kategoriler
     const renderCategoryHeaderSection = () => (
         <View style={styles.categoryHeader}>
             <View>
@@ -322,9 +318,8 @@ const Home = () => {
             </View>
         </View>
     );
-    
-    
 
+    //kategori silme
     const handleDeleteCategory = (categoryId) => {
         
         Alert.alert(
@@ -346,6 +341,7 @@ const Home = () => {
         );
     };
 
+
     const renderItem = ({ item }) => (
         <View style={styles.categoryItemContainer}>
             <TouchableOpacity
@@ -354,6 +350,7 @@ const Home = () => {
             >
                 <Image source={item.icon} style={[styles.categoryIcon, { tintColor: item.color }]} />
                 <Text style={styles.categoryName}>{item.name}</Text>
+                {/* <Text style={styles.categoryTotal}>{getTotalExpense(item.id)}₺</Text> */}
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.deleteButton}
@@ -520,8 +517,8 @@ const Home = () => {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: COLORS.background },
-    navBar: { flexDirection: 'row', justifyContent: 'space-between', padding: 1, alignItems:'center' },
-    navButton: { padding: 40 ,marginVertical:10,marginHorizontal:1},
+    navBar: { flexDirection: 'row', justifyContent: 'space-between', padding: SIZES.padding, alignItems: 'center' },
+    navButton: { padding: SIZES.base, marginVertical: SIZES.base, marginHorizontal: SIZES.base },
     navIcon: { width: 24, height: 24 },
     header: { padding: SIZES.padding, backgroundColor: COLORS.white },
     headerTitle: { fontSize: 24, fontWeight: 'bold' },
@@ -536,24 +533,24 @@ const styles = StyleSheet.create({
     categoryTitle: { fontSize: 20, fontWeight: 'bold' },
     categorySubtitle: { fontSize: 16, color: COLORS.gray },
     viewModeButtons: { flexDirection: 'row' },
-    viewModeButton: { padding: SIZES.padding },
+    viewModeButton: { padding: SIZES.base },
     viewModeIcon: { width: 24, height: 24 },
     activeButton: { borderBottomWidth: 2, borderBottomColor: COLORS.primary },
     activeIcon: { tintColor: COLORS.primary },
-    categoryListContainer: { padding: SIZES.padding, paddingTop: 1, },
-    categoryItemContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 2 },
+    categoryListContainer: { padding: SIZES.padding, paddingTop: SIZES.base },
+    categoryItemContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: SIZES.base },
     categoryItem: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-    categoryIcon: { width: 24, height: 24, marginRight: 20 },
+    categoryIcon: { width: 24, height: 24, marginRight: SIZES.base },
     categoryName: { fontSize: 20 },
     deleteButton: { 
         flexDirection: 'row', 
         alignItems: 'center', 
-        paddingVertical: 4, 
-        paddingHorizontal: 4, 
+        paddingVertical: 6, 
+        paddingHorizontal: 10, 
         backgroundColor: COLORS.lightGray, 
-        borderRadius: 10,
-        marginLeft: 6,
-        marginRight:10
+        borderRadius: 8,
+        marginLeft: SIZES.base,
+        marginRight: SIZES.base,
     }, 
     deleteButtonIcon: { 
         width: 20, 
@@ -561,18 +558,20 @@ const styles = StyleSheet.create({
         tintColor: 'red', 
         marginRight: 4 
     }, 
-    // deleteButtonText: { 
-    //     fontSize: 14, 
-    //     color: 'white' 
-    // }, 
     categoryDetailsContainer: { padding: SIZES.padding },
     categoryDetailsTitle: { fontSize: 20, fontWeight: 'bold' },
     expenseItem: { 
         marginBottom: SIZES.padding,
         padding: SIZES.padding,
         borderRadius: 5,
-        backgroundColor: 'transparent', // Dinamik arka plan rengi için
-    },    expenseTitle: { fontSize: 16, fontWeight: 'bold' },
+        backgroundColor: COLORS.lightGray2, // Dynamic background color example
+        shadowColor: '#000', 
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },    
+    expenseTitle: { fontSize: 16, fontWeight: 'bold' },
     expenseDescription: { fontSize: 14, color: COLORS.gray },
     expenseLocation: { fontSize: 14, color: COLORS.gray },
     expenseTotal: { fontSize: 16, fontWeight: 'bold' },
@@ -582,36 +581,28 @@ const styles = StyleSheet.create({
     saveButtonText: { color: COLORS.white, fontSize: 14, textAlign: 'center' }, 
     addCategoryButton: { 
         position: 'absolute', 
-        top: 130,  
-        right: 10, 
+        top: SIZES.padding * 5, // Adjust top dynamically
+        right: SIZES.base, 
         backgroundColor: COLORS.primary, 
-        borderRadius: 10, 
-        // padding: 10 ,
+        borderRadius: 30, 
+        padding: SIZES.base,
         justifyContent: 'center',
-
         alignItems: 'center',
         flexDirection: 'row',
-        borderWidth: 0, // Kenar çizgilerini kaldırma
-        borderColor: 'transparent', // Kenar rengini şeffaf yapma
-
     },
     addCategoryIcon: { 
-        width: 44,  // İkonun genişliği
-        height: 44, // İkonun yüksekliği
-        tintColor: COLORS.white, // İkonun rengi
-        resizeMode: 'contain', // İkonun ölçeklenmesini sağlar
-        borderWidth: 0, // Kenar çizgilerini kaldırma
-        borderColor: 'transparent', // Kenar rengini şeffaf yapma
-
-
+        width: 44,  
+        height: 44, 
+        tintColor: COLORS.white, 
+        resizeMode: 'contain',
     },
-        
     modalContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' },
-    modalContent: { backgroundColor: COLORS.white, padding: SIZES.padding, borderRadius: 5, width: '80%' },
+    modalContent: { backgroundColor: COLORS.white, padding: SIZES.padding, borderRadius: 10, width: '80%' },
     modalTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: SIZES.padding },
     closeButton: { marginTop: SIZES.padding, alignItems: 'center' },
     closeButtonText: { color: COLORS.primary, fontSize: 16 },
 });
+
 
 
 export default Home;
